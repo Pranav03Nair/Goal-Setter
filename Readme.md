@@ -48,3 +48,9 @@ This is a full-stack MERN application with features like user registration, logi
 
 ## License
 This project is licensed under the MIT License.
+
+## Note
+To test the deployed Project use - 
+Mail - admin@mail.com
+Pass - admin
+It would have 30 seconds to load for the first time, since the backend is deployed on a free server.
