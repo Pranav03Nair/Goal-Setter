@@ -3,7 +3,6 @@
 To test the deployed Project use - 
 - Mail - admin@mail.com
 - Pass - admin
-- It would take 30 seconds to load for the first time, since the backend is deployed on a free server.
 
 ## Introduction
 
