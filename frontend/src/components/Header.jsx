@@ -1,11 +1,28 @@
-import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import {
+  Navbar,
+  NavBody,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+  NavbarButton,
+} from "@/components/ui/resizable-navbar";
+
+import { Goal } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../redux/auth/authSlice.js";
+
+import { useState } from "react";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const { userToken } = useSelector((state) => state.auth);
 
   const onLogout = async () => {
     await dispatch(logout());
@@ -13,50 +30,63 @@ function Header() {
     navigate("/login");
   };
 
-  const { userToken } = useSelector((state) => state.auth);
+  // Nav Links
+  const mobileItems = userToken
+    ? [
+        <NavbarButton onClick={onLogout} variant="dark" key="logout">
+          Logout
+        </NavbarButton>,
+      ]
+    : [
+        <NavbarButton as={Link} to="/login" key="login">
+          Login
+        </NavbarButton>,
+        <NavbarButton as={Link} to="/register" key="register">
+          Register
+        </NavbarButton>,
+      ];
 
   return (
-    <header className="flex h-14 w-full items-center justify-between bg-primary px-4 shadow-md">
-      <div>
-        <Link to="/" className="text-lg font-semibold text-button-text">
+    <Navbar>
+      <NavBody>
+        <Link to="/" className="text-xl flex items-center gap-1 font-bold text-black dark:text-white">
+          {/* 🔄 Replace with your logo or text */}
+          <Goal className="size-8" color="white" />
           GoalSetter
         </Link>
-      </div>
-      <ul className="flex space-x-4 md:space-x-8">
-        {userToken ? (
-          <li>
-            <button
-              className="flex items-center space-x-2 text-button-text hover:text-gray-300"
-              onClick={onLogout}
-            >
-              <FaSignOutAlt />
-              <span>Logout</span>
-            </button>
-          </li>
-        ) : (
-          <>
-            <li>
-              <Link
-                to="/login"
-                className="flex items-center space-x-2 text-button-text hover:text-gray-300"
-              >
-                <FaSignInAlt />
-                <span>Login</span>
-              </Link>
-            </li>
-            <li>
-              <Link
-                to="/register"
-                className="flex items-center space-x-2 text-button-text hover:text-gray-300"
-              >
-                <FaUser />
-                <span>Register</span>
-              </Link>
-            </li>
-          </>
-        )}
-      </ul>
-    </header>
+
+        <div className="hidden gap-4 lg:flex">
+          {userToken ? (
+            <NavbarButton onClick={onLogout} variant="light">
+              Logout
+            </NavbarButton>
+          ) : (
+            <>
+              <NavbarButton as={Link} to="/login" variant="light">
+                Login
+              </NavbarButton>
+              <NavbarButton as={Link} to="/register" variant="light">
+                Register
+              </NavbarButton>
+            </>
+          )}
+        </div>
+      </NavBody>
+      <MobileNav visible>
+        <MobileNavHeader>
+          <Link to="/" className="text-lg font-bold text-black dark:text-white">
+            GoalSetter
+          </Link>
+          <MobileNavToggle
+            isOpen={menuOpen}
+            onClick={() => setMenuOpen((prev) => !prev)}
+          />
+        </MobileNavHeader>
+        <MobileNavMenu isOpen={menuOpen} onClose={() => setMenuOpen(false)}>
+          {mobileItems}
+        </MobileNavMenu>
+      </MobileNav>
+    </Navbar>
   );
 }
 

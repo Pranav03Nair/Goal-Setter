@@ -10,21 +10,28 @@ dotenv.config();
 
 // Fire Up
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3000;
 
 // MongoDB
 connectMongo();
 
 // Middleware
+app.use(cors());
 app.use(urlencoded({ extended: true }));
 app.use(express.json());
-app.use(errorHandler);
-app.use(cors());
 
 // Routes
 app.use("/api/goals", goalRoutes);
 app.use("/api/users", userRoutes);
 
+// Health
+app.get("/health", (req, res) => {
+  res.status(200).json({ Message: "Healthy" });
+});
+
+// Error handler middleware
+app.use(errorHandler);
+
 app.listen(port, () => {
-	console.log(`Server runnning on Port - ${port}`);
+  console.log(`Server runnning on Port - ${port}`);
 });

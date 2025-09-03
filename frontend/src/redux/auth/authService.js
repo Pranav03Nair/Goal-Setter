@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://goal-setter-backend-69u8.onrender.com/api/users/";
+const API_URL = "http://localhost:3000/api/users/";
 
 // Register
 const register = async (userData) => {
