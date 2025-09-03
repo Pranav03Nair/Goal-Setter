@@ -1,11 +1,11 @@
-import React from "react";
 import { useState, useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register, reset } from "../redux/auth/authSlice.js";
 
-import { FaUser } from "react-icons/fa";
+// import { Goal } from "lucide-react";
+import { RegisterForm } from "@/components/register-form";
+
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner.jsx";
 
@@ -39,12 +39,12 @@ const Register = () => {
     }
 
     dispatch(reset());
-  }, [userToken, isError, isSuccess, message]);
+  }, [userToken, isError, isSuccess, message, navigate, dispatch]);
 
-  //   FormFunctions
+  // FormFunctions
   const onChange = (e) => {
-    setFormData((currState) => ({
-      ...currState,
+    setFormData((existing) => ({
+      ...existing,
       [e.target.name]: e.target.value,
     }));
   };
@@ -70,58 +70,38 @@ const Register = () => {
   }
 
   return (
-    <>
-      <section className="bg-primary text-button-text self-center rounded-lg p-6 shadow-lg">
-        <h1 className="mb-4 flex items-center justify-center space-x-2 text-3xl font-bold">
-          <FaUser className="text-accent" />
-          <span>Register</span>
-        </h1>
-        <p className="text-secondary">Please Create An Account</p>
-      </section>
-
-      <section className="bg-secondary mt-6 flex w-96 self-center rounded-lg p-6 shadow-lg">
-        <form onSubmit={onSubmit} className="flex flex-1 flex-col space-y-4">
-          <input
-            type="text"
-            className="bg-background text-text focus:ring-accent w-full rounded-lg border border-gray-500 p-3 focus:outline-none focus:ring-2"
-            name="name"
-            value={name}
-            placeholder="Please enter your Name"
-            onChange={onChange}
-          />
-          <input
-            type="email"
-            className="bg-background text-text focus:ring-accent w-full rounded-lg border border-gray-500 p-3 focus:outline-none focus:ring-2"
-            name="email"
-            value={email}
-            placeholder="Please enter your Email"
-            onChange={onChange}
-          />
-          <input
-            type="password"
-            className="bg-background text-text focus:ring-accent w-full rounded-lg border border-gray-500 p-3 focus:outline-none focus:ring-2"
-            name="password"
-            value={password}
-            placeholder="Please enter your Password"
-            onChange={onChange}
-          />
-          <input
-            type="password"
-            className="bg-background text-text focus:ring-accent w-full rounded-lg border border-gray-500 p-3 focus:outline-none focus:ring-2"
-            name="confirmPass"
-            value={confirmPass}
-            placeholder="Please confirm your Password"
-            onChange={onChange}
-          />
-          <button
-            type="submit"
-            className="bg-accent text-button-text w-full rounded-lg p-3 transition duration-200 hover:bg-green-600"
-          >
-            Submit
-          </button>
-        </form>
-      </section>
-    </>
+    <div className="grid min-h-svh lg:grid-cols-2">
+      <div className="flex flex-col gap-4 p-6 md:p-10">
+        {/* <div className="flex justify-center gap-2 md:justify-start">
+          <a href="#" className="flex items-center gap-1 font-medium">
+            <div className="flex size-6 items-center justify-center rounded-md text-primary-foreground">
+              <Goal className="size-8" color="white" />
+            </div>
+            GET. SET. GO
+          </a>
+        </div> */}
+        <div className="flex flex-1 items-center justify-center">
+          <div className="w-full max-w-xs">
+            <RegisterForm
+              name={name}
+              email={email}
+              password={password}
+              confirmPass={confirmPass}
+              onChange={onChange}
+              onSubmit={onSubmit}
+              isLoading={isLoading}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="relative hidden bg-muted lg:block">
+        <img
+          src="/assets/signin.jpg"
+          alt="Image"
+          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2]"
+        />
+      </div>
+    </div>
   );
 };
 

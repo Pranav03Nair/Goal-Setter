@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createGoal } from "../redux/goals/goalSlice";
 
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Plus, Target } from "lucide-react";
+
 const GoalForm = () => {
   const [text, setText] = useState("");
 
@@ -9,39 +14,41 @@ const GoalForm = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    // Make sure you're passing the correct structure
-    dispatch(createGoal({ text }));
-    setText("");
+    if (text.trim()) {
+      dispatch(createGoal({ text }));
+      setText("");
+    }
   };
 
   return (
-    <section className="mt-6 rounded-lg bg-secondary p-6 shadow-lg">
-      <form onSubmit={onSubmit} className="space-y-4">
-        <div>
-          <label
-            htmlFor="text"
-            className="mb-2 block text-lg font-semibold text-text"
-          >
-            Goal
-          </label>
-          <input
-            type="text"
-            name="text"
-            id="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            className="w-full rounded-lg border border-gray-500 bg-background p-3 text-text focus:outline-none focus:ring-2 focus:ring-accent"
-            placeholder="Enter your goal"
-          />
-        </div>
-        <button
-          type="submit"
-          className="w-full rounded-lg bg-accent p-3 text-button-text transition duration-200 hover:bg-green-600"
-        >
-          Add Goal
-        </button>
-      </form>
-    </section>
+    <form onSubmit={onSubmit} className="space-y-4">
+      <div className="space-y-2">
+        <Label htmlFor="text" className="text-sm font-medium flex items-center gap-2">
+          <Target className="h-4 w-4 text-primary" />
+          What is your goal?
+        </Label>
+        <Textarea
+          id="text"
+          name="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Describe your goal in detail... (e.g., 'Read 12 books this year', 'Exercise 30 minutes daily')"
+          className="min-h-[100px] resize-none focus:ring-2 focus:ring-primary/20"
+          rows={4}
+        />
+        <p className="text-xs text-muted-foreground">
+          Be specific and make it measurable for better results!
+        </p>
+      </div>
+      <Button 
+        type="submit" 
+        className="w-full bg-primary hover:bg-primary/90 transition-all duration-200 shadow-lg hover:shadow-xl"
+        disabled={!text.trim()}
+      >
+        <Plus className="h-4 w-4 mr-2" />
+        Add Goal
+      </Button>
+    </form>
   );
 };
 
