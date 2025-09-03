@@ -1,6 +1,6 @@
 # Goal Setter Project
 ## Note
-To test the deployed Project use - 
+To test the deployed Project either **SIGNUP** or **LOGIN** using - 
 - Mail - admin@mail.com
 - Pass - admin
 
